@@ -1,0 +1,26 @@
+{
+  "name": "icd10-gm",
+  "version": "1.0.0",
+  "description": "Node module for finding ICD 10 code of various diagnoses in german.",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js",
+    "build": "tsc",
+    "start:dev": "tsc-watch --onSuccess \"node dist/test.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "leah.ili",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "tsc-watch": "^6.2.0",
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "csv-parser": "^3.0.0"
+  },
+  "files": [
+    "dist/",
+    "data/icd10gm2024syst_kodes.txt"
+  ]
+}
