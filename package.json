@@ -6,7 +6,7 @@
   "types": "icd10-gm.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ninercav/icd10-gm"
+    "url": "git+https://github.com/ninercav/icd10-gm.git"
   },
   "scripts": {
     "start": "tsc && node dist/app.js",
@@ -26,6 +26,7 @@
   },
   "files": [
     "dist/",
-    "data/icd10gm2024syst_kodes.txt"
+    "data/icd10gm2024syst_kodes.txt",
+    "icd10-gm.d.ts"
   ]
 }
