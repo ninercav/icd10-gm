@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Node module for finding ICD 10 code of various diagnoses in german.",
   "main": "dist/app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ninercav/icd10-gm"
+  },
   "scripts": {
     "start": "tsc && node dist/app.js",
     "build": "tsc",
