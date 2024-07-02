@@ -7,11 +7,11 @@ The ICD-10 GM is the German modification of the 10th revision of the internation
 ## Usage
 ### Get diagnosis code from diagnosis name
 Import the package, then you can call the `getICDCodeByDiagnosisName(diagnosisName)` method, which takes a diagnosis (or partial diagnosis) name as the parameter and returns a promise of the possible matches as an object (with the keys name and ICDCode).
-Run the code below:
+See example below:
 ```typescript
 import { getICDCodeByDiagnosisName } from 'icd10-gm';
 
-getICDCodeByDiagnosisName('hypertonie').then((data) => {
+getICDCodeByDiagnosisName('hypertonie').then(data => {
     console.log(data);
 }).catch((error: any) => {
     console.log(error)
