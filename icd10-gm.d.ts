@@ -1,4 +1,4 @@
-interface DiagnosisData {
+export interface DiagnosisData {
     name: string;
     ICDCode: string;
 }
