@@ -18,4 +18,5 @@ export interface DiagnosisObject {
 // Declare the module and its exports
 declare module 'icd10-gm' {
   export async function getICDCodeByDiagnosisName(diagnosisName: string): Promise<DiagnosisData[]>;
+  export async function getAllDiagnosisCodes(): Promise<DiagnosisObject[]>;
 }
