@@ -1,5 +1,5 @@
 import path from 'path';
-import testcsv from 'csvtojson';
+import csv from 'csvtojson';
 import { DiagnosisObject } from './icd10-gm';
 
 const headers = ['classificationLevel', 'codableEndpoint', 'explicitOrSubclassified', 'chapterNr', 'firstThreeCharsOfGroup', 'codeWithoutCross', 'codeWithoutExtraChars', 'codeWithoutPunctuation', 'classTitle'];
@@ -19,15 +19,20 @@ export async function getICDCodeByDiagnosisName(diagnosisName: string): Promise<
     }
 }
 
+export async function getAllDiagnosisCodes(): Promise<DiagnosisObject[]> {
+    try {
+        const diagnosisCodes = await readCSVData();
+        return diagnosisCodes;
+    } catch (error) {
+        throw new Error(`Failed to get all ICD codes: ${error.message}`);
+    }
+}
+
 async function readCSVData(): Promise<DiagnosisObject[]> {
     try {
-        let filePath;
-        if(typeof __dirname === 'undefined') {
-            filePath = 'node_modules/icd10-gm/data/icd10gm2024syst_kodes.txt';
-        } else {
-            filePath = path.join(__dirname, '..', 'data', 'icd10gm2024syst_kodes.txt');
-        }
-        const jsonArray = await testcsv({
+        const filePath = path.join(process.cwd(), 'data', 'icd10gm2024syst_kodes.txt');
+
+        const jsonArray = await csv({
             noheader: true,
             headers: headers,
             delimiter: ';'
