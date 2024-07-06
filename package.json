@@ -1,6 +1,6 @@
 {
   "name": "icd10-gm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Node module for finding ICD 10 code of various diagnoses in german.",
   "main": "dist/app.js",
   "types": "icd10-gm.d.ts",
