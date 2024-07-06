@@ -21,12 +21,7 @@ export async function getICDCodeByDiagnosisName(diagnosisName: string): Promise<
 
 async function readCSVData(): Promise<DiagnosisObject[]> {
     try {
-        let filePath;
-        if(typeof __dirname === 'undefined') {
-            filePath = path.join(process.cwd(), 'node_modules', 'icd10-gm', 'data', 'icd10gm2024syst_kodes.txt');
-        } else {
-            filePath = path.join(__dirname, '..', 'data', 'icd10gm2024syst_kodes.txt');
-        }
+        const filePath = path.join(process.cwd(), 'node_modules', 'icd10-gm', 'data', 'icd10gm2024syst_kodes.txt');
 
         const jsonArray = await testcsv({
             noheader: true,
