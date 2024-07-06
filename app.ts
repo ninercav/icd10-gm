@@ -23,7 +23,7 @@ async function readCSVData(): Promise<DiagnosisObject[]> {
     try {
         let filePath;
         if(typeof __dirname === 'undefined') {
-            filePath = path.join('node_modules', 'icd10-gm', 'data', 'icd10gm2024syst_kodes.txt');
+            filePath = 'node_modules/icd10-gm/data/icd10gm2024syst_kodes.txt';
         } else {
             filePath = path.join(__dirname, '..', 'data', 'icd10gm2024syst_kodes.txt');
         }
