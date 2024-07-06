@@ -30,7 +30,12 @@ export async function getAllDiagnosisCodes(): Promise<DiagnosisObject[]> {
 
 async function readCSVData(): Promise<DiagnosisObject[]> {
     try {
-        const filePath = path.join(process.cwd(), 'data', 'icd10gm2024syst_kodes.txt');
+        let filePath;
+        if (require.main === module) {
+            filePath = path.join(process.cwd(), 'data', 'icd10gm2024syst_kodes.txt');
+        } else {
+            filePath = path.join(process.cwd(), 'node_modules', 'icd10-gm', 'data', 'icd10gm2024syst_kodes.txt');
+        }
 
         const jsonArray = await csv({
             noheader: true,
@@ -40,9 +45,8 @@ async function readCSVData(): Promise<DiagnosisObject[]> {
         const filteredData = await filterData(jsonArray);
         return filteredData;
     } catch(error) {
-        console.log("Error reading CSV data: ", error);
+        throw new Error(`Error reading CSV data: ${error.message}`);
     }
-    return [];
 }
 
 async function filterData(data: any[]): Promise<DiagnosisObject[]> {
