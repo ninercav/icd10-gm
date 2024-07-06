@@ -22,7 +22,7 @@
     "typescript": "^5.5.2"
   },
   "dependencies": {
-    "csv-parser": "^3.0.0"
+    "csvtojson": "^2.0.10"
   },
   "files": [
     "dist/",

@@ -1,37 +1,8 @@
-import csv from 'csv-parser';
-import fs from 'fs';
 import path from 'path';
+import testcsv from 'csvtojson';
+import { DiagnosisObject } from './icd10-gm';
 
 const headers = ['classificationLevel', 'codableEndpoint', 'explicitOrSubclassified', 'chapterNr', 'firstThreeCharsOfGroup', 'codeWithoutCross', 'codeWithoutExtraChars', 'codeWithoutPunctuation', 'classTitle'];
-
-function readCSVData(): Promise<any[]> {
-    return new Promise((resolve, reject) => {
-        const diagnosisCodes: any[] = [];
-        try {
-            const filePath = path.join(__dirname, '../data', 'icd10gm2024syst_kodes.txt');
-            fs.createReadStream(filePath, 'utf8')
-                .pipe(csv({ separator: ';', headers }))
-                .on('data', (data) => { // todo: change package version to 0
-                    const newObj: any = {};
-                    headers.forEach((header) => {
-                        newObj[header] = data[header];
-                    });
-                    if (newObj['classificationLevel'] === '3' && newObj['explicitOrSubclassified'] === 'X') { // only get the main categories (e.g. E10) - need three-digit code for that
-                        diagnosisCodes.push(newObj);
-                    }
-                })
-                .on('end', () => {
-                    if (diagnosisCodes.length === 0) {
-                        reject(new Error('No data found'));
-                    } else {
-                        resolve(diagnosisCodes);
-                    }
-                });
-        } catch (error) {
-            reject(`Error reading CSV file: ${error.message}`);
-        }
-    });
-}
 
 export async function getICDCodeByDiagnosisName(diagnosisName: string): Promise<object[]> {
     try {
@@ -46,4 +17,36 @@ export async function getICDCodeByDiagnosisName(diagnosisName: string): Promise<
     } catch (error) {
         throw new Error(`Failed to get ICD codes: ${error.message}`);
     }
+}
+
+async function readCSVData(): Promise<DiagnosisObject[]> {
+    try {
+        const filePath = path.join(__dirname, '../data', 'icd10gm2024syst_kodes.txt');
+        const jsonArray = await testcsv({
+            noheader: true,
+            headers: headers,
+            delimiter: ';'
+        }).fromFile(filePath);
+        const filteredData = await filterData(jsonArray);
+        return filteredData;
+    } catch(error) {
+        console.log("Error: ", error);
+    }
+    return [];
+}
+
+async function filterData(data: any[]): Promise<DiagnosisObject[]> {
+    const filteredData: DiagnosisObject[] = [];
+    data.forEach((diagnosisObject) => {
+        if (diagnosisObject['classificationLevel'] === '3' && diagnosisObject['explicitOrSubclassified'] === 'X') { // only get the main categories (e.g. E10) - need three-digit code for that
+            const newObj: any = {};
+            headers.forEach((header) => {
+                newObj[header] = diagnosisObject[header];
+            });
+            const newDiagnosisObject: DiagnosisObject = newObj;
+            filteredData.push(newDiagnosisObject);
+        }
+    });
+    return filteredData;
+
 }
