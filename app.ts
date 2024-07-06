@@ -21,7 +21,15 @@ export async function getICDCodeByDiagnosisName(diagnosisName: string): Promise<
 
 async function readCSVData(): Promise<DiagnosisObject[]> {
     try {
-        const filePath = path.join(__dirname, '../data', 'icd10gm2024syst_kodes.txt');
+        const isDirectlyExecuted = require.main === module;
+        let filePath;
+        if (isDirectlyExecuted) {
+            // Path when the script is run directly
+            filePath = path.join(__dirname, '../data', 'icd10gm2024syst_kodes.txt');
+        } else {
+            // Path when the script is included in a package
+            filePath = path.join(process.cwd(), 'node_modules', 'icd10-gm', 'data', 'icd10gm2024syst_kodes.txt');
+        }
         const jsonArray = await testcsv({
             noheader: true,
             headers: headers,
@@ -30,7 +38,7 @@ async function readCSVData(): Promise<DiagnosisObject[]> {
         const filteredData = await filterData(jsonArray);
         return filteredData;
     } catch(error) {
-        console.log("Error: ", error);
+        console.log("Error reading CSV data: ", error);
     }
     return [];
 }
